@@ -1,4 +1,8 @@
-let tareas = []
+let tareas = JSON.parse(localStorage.getItem("tareas"))
+
+if (tareas == null){
+    tareas = []
+}
 
 class Tarea{
     constructor(titulo, descripcion, fecha, hora){
@@ -23,18 +27,24 @@ class Tarea{
 const agregarTarea = (titulo, fecha, hora, descripcion) => {
     let nuevaTarea = new Tarea(titulo, fecha, hora, descripcion)
     tareas.push(nuevaTarea)
+    localStorage.setItem("tareas", JSON.stringify(tareas))
     render()
 }
 
-const completar = (id) => {
+const completar = (idOriginal) => {
+    let id = idOriginal.slice(9)
+    console.log(id)
     let index = tareas.findIndex(tarea => tarea.id == id) + 1;
     tareas[index].completar()
+    localStorage.setItem("tareas", JSON.stringify(tareas))
     render()
 }
 
-const eliminar = (id) => {
+const eliminar = (idOriginal) => {
+    let id = idOriginal.slice(8)
     let index = tareas.findIndex(tarea => tarea.id == id) + 1;
     tareas[index].eliminar()
+    localStorage.setItem("tareas", JSON.stringify(tareas))
     render()
 }
 
@@ -73,10 +83,10 @@ const render = () => {
             contenedorBotonCompletar.className = 'col-12 m-1'
             let botonCompletar = document.createElement('button')
             botonCompletar.className = "btn btn-primary"
-            botonCompletar.idCompletar = `${x}`
+            botonCompletar.id = `completar${x}`
             botonCompletar.innerHTML = 'Completar tarea'
             botonCompletar.addEventListener('click', (botonApretado) => {
-                completar(botonApretado.target.idCompletar)
+                completar(botonApretado.target.id)
             })
             contenedorBotonCompletar.appendChild(botonCompletar)
             card.appendChild(contenedorBotonCompletar)
@@ -85,10 +95,10 @@ const render = () => {
             contenedorBotonCancelar.className = 'col-12 m-1'
             let botonCancelar = document.createElement('button')
             botonCancelar.className = "btn btn-danger"
-            botonCancelar.idCancelar = `${x}`
+            botonCancelar.id = `eliminar${x}`
             botonCancelar.innerHTML = 'Cancelar tarea'
             botonCancelar.addEventListener('click', botonApretado => {
-                eliminar(botonApretado.target.idCancelar)
+                eliminar(botonApretado.target.id)
             })
             contenedorBotonCancelar.appendChild(botonCancelar)
             card.appendChild(contenedorBotonCancelar)
@@ -97,8 +107,8 @@ const render = () => {
             taskList.appendChild(row)
         }
     }
+    console.log(tareas)
 }
-
 
 document.getElementById("addTask").addEventListener("submit", function (e) {
     e.preventDefault();
@@ -110,3 +120,9 @@ document.getElementById("addTask").addEventListener("submit", function (e) {
     hora = formData.get("time")
     agregarTarea(titulo=titulo, descripcion=descripcion, fecha=fecha, hora=hora)
 });
+
+for (let x = 0; x < tareas.length; x++){
+    tareas[x] = new Tarea(tareas[x].titulo, tareas[x].fecha, tareas[x].hora, tareas[x].descripcion)
+}   
+localStorage.clear()
+render()
