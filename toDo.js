@@ -124,5 +124,5 @@ document.getElementById("addTask").addEventListener("submit", function (e) {
 for (let x = 0; x < tareas.length; x++){
     tareas[x] = new Tarea(tareas[x].titulo, tareas[x].fecha, tareas[x].hora, tareas[x].descripcion)
 }   
-localStorage.clear()
+
 render()
