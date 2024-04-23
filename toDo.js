@@ -50,12 +50,16 @@ const render = () => {
             row.className = `row justify-content-center my-4 task`
 
             let card = document.createElement('div')
-            card.className = `card w-50 p-0`
+            card.className = `card w-50 p-0 ${tareas[x].completado ? "text-bg-success": "nada"} `
 
             let titulo = document.createElement('h3')
             titulo.innerHTML = tareas[x].titulo
             card.appendChild(titulo)
             titulo.className ='card-header'
+            
+            let descripcion = document.createElement('p')
+            descripcion.innerHTML = tareas[x].descripcion
+            card.appendChild(descripcion)
 
             let fecha = document.createElement('p')
             fecha.innerHTML = tareas[x].fecha
@@ -64,10 +68,6 @@ const render = () => {
             let hora = document.createElement('p')
             hora.innerHTML = tareas[x].hora
             card.appendChild(hora)
-
-            let descripcion = document.createElement('p')
-            descripcion.innerHTML = tareas[x].descripcion
-            card.appendChild(descripcion)
 
             let contenedorBotonCompletar = document.createElement('div')
             contenedorBotonCompletar.className = 'col-12 m-1'
@@ -98,6 +98,7 @@ const render = () => {
         }
     }
 }
+
 
 document.getElementById("addTask").addEventListener("submit", function (e) {
     e.preventDefault();
