@@ -1,12 +1,12 @@
 let tareas = []
 
 class Tarea{
-    constructor(titulo, fecha, hora, descripcion){
+    constructor(titulo, descripcion, fecha, hora){
         this.id = tareas.length + 1
         this.titulo = titulo
+        this.descripcion = descripcion
         this.fecha = fecha
         this.hora = hora
-        this.descripcion = descripcion
         this.completado = false
         this.visible = true
     }
@@ -47,10 +47,10 @@ const render = () => {
     for (let x = 0; x < tareas.length; x++){
         if (tareas[x].visible == true){
             let row = document.createElement('div')
-            row.className = 'row justify-content-center my-4 task'
+            row.className = `row justify-content-center my-4 task`
 
             let card = document.createElement('div')
-            card.className = 'card w-50 p-0'
+            card.className = `card w-50 p-0`
 
             let titulo = document.createElement('h3')
             titulo.innerHTML = tareas[x].titulo
@@ -99,7 +99,13 @@ const render = () => {
     }
 }
 
-for(let x = 0; x < 5; x++){
-    agregarTarea('Lavar los platos', '18/04/2024', '23:59', 'Sacarle el moho al plato y al tenedor')
-}
-
+document.getElementById("addTask").addEventListener("submit", function (e) {
+    e.preventDefault();
+  
+    var formData = new FormData(e.target);
+    titulo = formData.get("title")
+    descripcion = formData.get("description")
+    fecha = formData.get("date")
+    hora = formData.get("time")
+    agregarTarea(titulo=titulo, descripcion=descripcion, fecha=fecha, hora=hora)
+});
