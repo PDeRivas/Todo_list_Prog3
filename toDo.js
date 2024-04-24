@@ -1,18 +1,19 @@
 let tareas = JSON.parse(localStorage.getItem("tareas"))
 
+console.log(localStorage.getItem("tareas"))
 if (tareas == null){
     tareas = []
 }
 
 class Tarea{
-    constructor(titulo, descripcion, fecha, hora){
-        this.id = tareas.length + 1
+    constructor(id, titulo, descripcion, fecha, hora, completado, visible){
+        this.id = id
         this.titulo = titulo
         this.descripcion = descripcion
         this.fecha = fecha
         this.hora = hora
-        this.completado = false
-        this.visible = true
+        this.completado = completado
+        this.visible = visible
     }
 
     completar(){
@@ -25,9 +26,10 @@ class Tarea{
 }
 
 const agregarTarea = (titulo, fecha, hora, descripcion) => {
-    let nuevaTarea = new Tarea(titulo, fecha, hora, descripcion)
+    let nuevaTarea = new Tarea(tareas.length + 1, titulo, fecha, hora, descripcion, false, true)
     tareas.push(nuevaTarea)
     localStorage.setItem("tareas", JSON.stringify(tareas))
+    
     render()
 }
 
@@ -54,7 +56,7 @@ const render = () => {
         taskList.removeChild(taskList.firstChild);
     }
 
-    for (let x = 0; x < tareas.length; x++){
+    for (let x = 0; x < tareas.length; x++){    
         if (tareas[x].visible == true){
             let row = document.createElement('div')
             row.className = `row justify-content-center my-4 task`
@@ -121,8 +123,9 @@ document.getElementById("addTask").addEventListener("submit", function (e) {
     agregarTarea(titulo=titulo, descripcion=descripcion, fecha=fecha, hora=hora)
 });
 
-for (let x = 0; x < tareas.length; x++){
-    tareas[x] = new Tarea(tareas[x].titulo, tareas[x].fecha, tareas[x].hora, tareas[x].descripcion)
-}   
-
+if (tareas != null){
+    for (let x = 0; x < tareas.length; x++){
+        tareas[x] = new Tarea(tareas[x].id, tareas[x].titulo, tareas[x].fecha, tareas[x].hora, tareas[x].descripcion, tareas[x].completado, tareas[x].visible)
+    }   
+}
 render()
